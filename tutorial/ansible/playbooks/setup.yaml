@@ -1,0 +1,32 @@
+---
+- name: Setup Instance
+  hosts: vm
+  become: true
+  tasks:
+    - name: Install dependencies
+      apt:
+        update_cache: true
+        name:
+          - make
+        state: present
+
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/debian/gpg
+        state: present
+
+    - name: Add Docker APT repository
+      apt_repository:
+        repo: deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable
+        state: present
+
+    - name: Install Docker
+      apt:
+        name: docker-ce
+        state: present
+
+    - name: Install docker-compose from official github repo
+      get_url:
+        url: https://github.com/docker/compose/releases/download/v2.28.1/docker-compose-linux-x86_64
+        dest: /usr/local/bin/docker-compose
+        mode: 'u+x,g+x'
