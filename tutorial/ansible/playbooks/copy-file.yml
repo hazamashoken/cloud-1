@@ -1,0 +1,11 @@
+---
+- name: Copy files over
+  hosts: localhost
+  tasks:
+    - name: Copy file with owner and permissions
+      ansible.builtin.copy:
+        src: ./nginx/
+        dest: ~/Desktop/dest/nginx/
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0644'

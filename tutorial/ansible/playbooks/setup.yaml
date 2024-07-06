@@ -1,6 +1,6 @@
 ---
 - name: Setup Instance
-  hosts: vm
+  hosts: localhost
   become: true
   tasks:
     - name: Install dependencies

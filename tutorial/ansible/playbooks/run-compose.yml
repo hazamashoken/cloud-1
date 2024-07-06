@@ -1,0 +1,28 @@
+---
+- name: Run compose
+  hosts: localhost
+  tasks:
+    - name: Tear down existing services
+      community.docker.docker_compose_v2:
+        project_src: ~/Desktop/dest/nginx/
+        state: absent
+
+    - name: Create and start service
+      community.docker.docker_compose_v2:
+        project_src: ~/Desktop/dest/nginx/
+      register: output
+
+    - name: Show results
+      ansible.builtin.debug:
+        var: output
+
+    - name: Run "docker compose up" again
+      community.docker.docker_compose_v2:
+        project_src: ~/Desktop/dest/nginx/
+        build: always
+      register: output
+
+    - name: Show results
+      ansible.builtin.debug:
+        var: output
+
