@@ -9,3 +9,9 @@ copy:
 
 up:
 	ansible-playbook ansible/playbooks/run-compose.yml -i inventory.ini --ask-become-pass -l localhost
+
+del-ec2:
+	ansible-playbook ansible/playbooks/ec-down.yml -i inventory.ini
+
+install-py:
+	ansible-playbook ansible/playbooks/install-python.yml -i inventory.ini

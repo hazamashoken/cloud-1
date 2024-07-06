@@ -1,0 +1,19 @@
+---
+- name: Terminate ec2
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+    - ../vars/aws_cred.yml
+  tasks:
+    - name: Terminate every running instance in a region. Use with EXTREME caution.
+      amazon.aws.ec2_instance:
+        region: "{{ region }}"
+        state: absent
+        filters:
+          instance-state-name: running
+        aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
+        aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
+      tags:
+        - ec2_delete_all
+        - ec2_terminate
