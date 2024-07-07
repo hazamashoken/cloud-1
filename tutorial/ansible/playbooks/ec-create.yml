@@ -1,0 +1,38 @@
+---
+- name: Setup an EC2 instance
+  hosts: localhost
+  connection: local
+  vars_files:
+    - ../vars/secret.yml
+  tasks:
+    - name: Create an EC2 machine
+      amazon.aws.ec2_instance:
+        aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
+        aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
+        key_name: cloud-1
+        instance_type: t1.micro
+        region: "{{ region }}"
+        image_id: "{{ ami_id }}"
+        wait: yes
+        network:
+          assign_public_ip: yes
+      register: newinstance
+      tags:
+        - ec2_create
+
+    - name: Associate new elastic IPs with each of the instances
+      amazon.aws.ec2_eip:
+        aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
+        aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
+        state: present
+        region: "{{ region }}"
+        device_id: "{{ newinstance.instance_ids[0] }}"
+      register: instance_eip
+      tags:
+        - eip_allocate
+    - debug: var=instance_eip.public_ip
+
+    - name: Add the machine to the inventory
+      add_host:
+        hostname: "{{ newinstance.private_ip }}"
+        groupname: aws

@@ -4,7 +4,7 @@
   connection: local
   gather_facts: no
   vars_files:
-    - ../vars/aws_cred.yml
+    - ../vars/secret.yml
   tasks:
     - name: Terminate every running instance in a region. Use with EXTREME caution.
       amazon.aws.ec2_instance:

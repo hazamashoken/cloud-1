@@ -15,3 +15,6 @@ del-ec2:
 
 install-py:
 	ansible-playbook ansible/playbooks/install-python.yml -i inventory.ini
+
+cre-ec2:
+	ansible-playbook ansible/playbooks/ec-create.yml -i inventory.ini

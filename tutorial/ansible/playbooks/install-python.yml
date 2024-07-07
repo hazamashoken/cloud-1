@@ -1,6 +1,7 @@
 ---
 - name: Install dependencies
-  hosts: aws
+  hosts: localhost
+  connection: local
   tasks:
     - name: Install boto3 and botocore with pip3 module
       pip:

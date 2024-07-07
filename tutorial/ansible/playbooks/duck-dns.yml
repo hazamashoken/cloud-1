@@ -1,0 +1,12 @@
+---
+- name: DuckDns
+  hosts: localhost
+  connection: local
+  vars_files:
+    - ../vars/secret.yml
+  tasks:
+    - name: Update DNS
+      ansible.builtin.uri:
+        url: https://www.duckdns.org/update?domains={{ domain }}&token={{ duck_token }}&ip={{ e_ip }}
+      tags:
+        - duck_dns_update
